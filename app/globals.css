@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    a {
+        @apply text-blue-500
+    }
+}
+
+@layer utilities {
+    .text-bigger-hello {
+        @apply text-3xl font-semibold
+    }
+}
+
+@layer components {
+    .main {
+        @apply bg-gray-100 sm:bg-red-100 md:bg-green-100 h-screen lg:bg-cyan-100 xl:bg-purple-100 2xl:bg-blue-300 flex items-center justify-center p-5
+    }
+}
