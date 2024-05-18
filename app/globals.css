@@ -4,18 +4,18 @@
 
 @layer base {
     a {
-        @apply text-blue-500
+      @apply text-orange-500
     }
-}
-
-@layer utilities {
+  }
+  
+  @layer utilities {
     .text-bigger-hello {
-        @apply text-3xl font-semibold
+      @apply text-3xl font-semibold;
     }
-}
-
-@layer components {
-    .main {
-        @apply bg-gray-100 sm:bg-red-100 md:bg-green-100 h-screen lg:bg-cyan-100 xl:bg-purple-100 2xl:bg-blue-300 flex items-center justify-center p-5
+  }
+  
+  @layer components {
+    .btn {
+      @apply w-full bg-black h-10 text-white rounded-sexy-name mt-tomato;
     }
-}
+  }
