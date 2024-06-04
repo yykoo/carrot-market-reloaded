@@ -4,9 +4,8 @@ import bcrypt from "bcrypt"
 import { PASSWORD_MIN_LENGTH, PASSWORD_REGEX, PASSWORD_REGEX_ERROR } from "@/lib/constants"
 import db from "@/lib/db"
 import {z} from "zod"
-import { getIronSession } from "iron-session"
-import { cookies } from "next/headers"
 import { redirect } from 'next/navigation'
+import getSession from "@/lib/session"
 
 //const passwordRegex = PASSWORD_REGEX
   
@@ -70,7 +69,8 @@ export async function createAccount(prevState:any, formData:FormData) {
         confirm_passwd: formData.get("confirm_passwd"),
     }
     //const result = formSchema.safeParse(data)
-    const result = await formSchema.safeParseAsync(data)
+    //const result = await formSchema.safeParseAsync(data)
+    const result = await formSchema.spa(data)
 
     if(!result.success)
     {
@@ -91,17 +91,10 @@ export async function createAccount(prevState:any, formData:FormData) {
                 id: true
             }
         })
-        console.log(user)
+        const session = await getSession();
 
-        const cookie = await getIronSession(cookies(), {
-            cookieName: "delicious-Karrot",
-            password: process.env.COOKIE_PASSWORD!,
-        })
-
-        //@ts-ignore
-        cookie.id = user.id 
-        await cookie.save()
-        
+        session.id = user.id 
+        await session.save()
         // save the user to DB
         // log the user in
         redirect("/profile");
