@@ -1,7 +1,12 @@
 import db from "@/lib/db";
 import getSession from "@/lib/session";
+import { avoidDupCreateUser, loginProc } from "@/lib/user-actions";
 import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
+
+async function getAccessToken(code:string) {
+
+}
 
 export async function GET(request: NextRequest) {
     const code = request.nextUrl.searchParams.get("code")
@@ -54,13 +59,17 @@ export async function GET(request: NextRequest) {
         }
     })
     if(user) {
-        const session = await getSession()
-        session.id = user.id 
-        await session.save()
+        // const session = await getSession()
+        // session.id = user.id 
+        // await session.save()
+        // return redirect("/profile")
+        await loginProc(user.id)
         return redirect("/profile")
     }
 
     // 회원정보 없을때
+    const newUser = await avoidDupCreateUser("git", id+'', avatar_url, login)
+    /**
     const newUser = await db.user.create({
         data: {
             github_id:id + "",
@@ -71,11 +80,14 @@ export async function GET(request: NextRequest) {
             id: true
         }
     })
-    if(user) {
-        const session = await getSession()
-        session.id = newUser.id 
-        await session.save()
-        return redirect("/profile")
+    */
+    if(newUser) {
+        // const session = await getSession()
+        // session.id = newUser.id 
+        // await session.save()
+        //return redirect("/profile")
+        await loginProc(newUser.id)
+        redirect("/profile")
     }
 }
 /**
