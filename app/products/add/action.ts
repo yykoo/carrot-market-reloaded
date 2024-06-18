@@ -5,7 +5,9 @@ import fs from "fs/promises"
 import db from "@/lib/db"
 import getSession from "@/lib/session"
 import { redirect } from "next/navigation"
+import { productSchema } from "./schema"
 
+/*
 const productSchema = z.object({
     photo: z.string({
         required_error: "photo is required",
@@ -20,6 +22,7 @@ const productSchema = z.object({
         required_error: "Price is required",
     }),
 })
+*/
 
 export async function uploadProduct(_: any, formData: FormData) {
     const data = {
