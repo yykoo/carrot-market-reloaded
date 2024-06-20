@@ -4,6 +4,7 @@ import db from "@/lib/db";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
+import { title } from "process";
 
 async function getInitialProducts() {
     const products = await db.product.findMany({
@@ -23,6 +24,10 @@ async function getInitialProducts() {
 }
 
 export type InitialProduct = Prisma.PromiseReturnType<typeof getInitialProducts>
+
+export const metadata = {
+    title: "Home",
+}
 
 export default async function Products() {
     const initialProducts = await getInitialProducts();
