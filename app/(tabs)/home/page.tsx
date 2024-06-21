@@ -3,8 +3,13 @@ import ProductList from "@/components/product-list";
 import db from "@/lib/db";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { Prisma } from "@prisma/client";
+import { unstable_cache as nextCache} from "next/cache";
 import Link from "next/link";
 import { title } from "process";
+
+const getCachedProducts = nextCache(getInitialProducts
+    , ['home-products']
+    , {revalidate: 10})
 
 async function getInitialProducts() {
     const products = await db.product.findMany({
@@ -15,7 +20,7 @@ async function getInitialProducts() {
             photo: true,
             id: true,
         },
-        take: 1,
+        //take: 1,
         orderBy: {
             created_at: "desc",
         }
@@ -30,7 +35,8 @@ export const metadata = {
 }
 
 export default async function Products() {
-    const initialProducts = await getInitialProducts();
+    //const initialProducts = await getInitialProducts();
+    const initialProducts = await getInitialProducts()
     return (
         <div>
             <Link href="/home/recent">Recent Products</Link>

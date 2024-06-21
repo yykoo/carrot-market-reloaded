@@ -34,6 +34,12 @@ async function getProduct(id:number) {
     return product
 }
 
+export async function generateMetadata({params,}:{params: {id:string}}) {
+    return {
+        title: `Product ${params.id}`,
+    }
+}
+
 export default async function ProductDetail({params,}:{params: {id:string}}) {
     const id = Number(params.id)
     if(isNaN(id)) {
