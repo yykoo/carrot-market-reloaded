@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { formatToWon } from "@/lib/utils";
+import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 
 async function getIsOwner(userId:number) {
     const session = await getSession()
@@ -30,13 +31,36 @@ async function getProduct(id:number) {
             }
         },
     })
-    console.log(product)
+    console.log('getProduct')
     return product
 }
 
+const getCacheProduct = nextCache(getProduct, ["product-detail"], {
+    tags: ["product-detail", "all"]
+})
+
+async function getProductTitle(id:number) {
+    //await new Promise((resolve) => setTimeout(resolve, 60000));
+    const product = await db.product.findUnique({
+        where: {
+            id,
+        }, 
+        select: {
+            title: true,
+        },
+    })
+    console.log('getProductTitle')
+    return product
+}
+
+const getCachedProductTitle = nextCache(getProductTitle, ["product-title"], {
+    tags: ["product-title", "all"]
+})
+
 export async function generateMetadata({params,}:{params: {id:string}}) {
+    const product = await getCachedProductTitle(Number(params.id))
     return {
-        title: `Product ${params.id}`,
+        title: product?.title,
     }
 }
 
@@ -45,13 +69,16 @@ export default async function ProductDetail({params,}:{params: {id:string}}) {
     if(isNaN(id)) {
         return notFound()
     }
-    const product = await getProduct(id)
+    const product = await getCacheProduct(id)
     if(!product) {
         return notFound()
     }
 
     const isOwner = await getIsOwner(product.userId)
-
+    const revalidate = async() => {
+        'use server'
+        revalidateTag("all")
+    }
     return (
         <div>
             <div className="relative aspect-square">
@@ -73,7 +100,11 @@ export default async function ProductDetail({params,}:{params: {id:string}}) {
             <div className="fixed w-full bottom-0 left-0 p-5 pb-10 bg-neutral-800 flex justify-between items-center">
                 <span className="font-semibold text-lg">{formatToWon(product.price)}원</span>
                 {
-                    isOwner ? (<button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">Delete</button> ) : null
+                    isOwner ? (
+                        <form action={revalidate}>
+                            <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">Revalidate title</button>
+                        </form>
+                    ) : null
                 }
                 <Link className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold" href={``}>채팅하기</Link>
             </div>
