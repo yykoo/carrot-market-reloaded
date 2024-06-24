@@ -11,10 +11,10 @@ import { title } from "process";
 //     , ['home-products']
 //     , {revalidate: 10})
 
-const getCachedProducts = nextCache(getInitialProducts
-    , ['home-products'])
+const getCachedProducts = nextCache(getInitialProducts, ['home-products'])
 
 async function getInitialProducts() {
+    console.log("hit!!!")
     const products = await db.product.findMany({
         select: {
             title: true,
@@ -37,9 +37,12 @@ export const metadata = {
     title: "Home",
 }
 
+//export const dynamic = "force-dynamic"
+export const revalidate = 10
+
 export default async function Products() {
-    //const initialProducts = await getInitialProducts();
-    const initialProducts = await getInitialProducts()
+    const initialProducts = await getInitialProducts();
+    //const initialProducts = await getInitialProducts()
     const revalidate = async() => {
         "use server"
         revalidatePath("/home")
