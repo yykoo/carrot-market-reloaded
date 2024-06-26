@@ -8,11 +8,12 @@ import { formatToWon } from "@/lib/utils";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 
 async function getIsOwner(userId:number) {
-    const session = await getSession()
+/*     const session = await getSession()
 
     if(session.id) {
         return session.id === userId
-    }
+    } */
+
     return false
 }
 
@@ -118,4 +119,23 @@ export default async function ProductDetail({params,}:{params: {id:string}}) {
             </div>
         </div>
     )
+}
+
+/**
+ * dynamicParams == true 일때 static 하게 미리 생성된 페이지가 아니라면 DB에서 데이터를 가져와 보여주고 페이지를 생성한다. (default)
+ * dynamicParams == false 일때 static 하게 미리 생성된 페이지가 아니라면 에러를 리턴한다.
+ */
+export const dynamicParams = true
+
+export async function generateStaticParams() {
+    const products = await db.product.findMany({
+        select: {
+            id: true,
+        }
+    })
+
+    return products.map((product) => {id:product.id + ""})
+//    return [
+//     {id:"1"},{id:"2"},{id:"3"},{id:"4"},
+//    ] 
 }
