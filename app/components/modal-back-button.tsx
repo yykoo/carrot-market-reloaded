@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 export default function ModalBackButton() {
     const router = useRouter()
     const onCloseClick = () => {
+        console.log("back click")
         router.back()
     }
     return (

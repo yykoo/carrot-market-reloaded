@@ -8,7 +8,7 @@ export function formatToTimeAgo(date:string):string {
     const time = new Date(date).getTime()
     const now = new Date().getTime()
     const diff = Math.round((time - now) / dayInMs)
-    console.log(time + " >> " + now + " >> " + diff)
+    //console.log(time + " >> " + now + " >> " + diff)
     if(diff == 0)    return "오늘"
     else {
         const formatter = new Intl.RelativeTimeFormat("ko")

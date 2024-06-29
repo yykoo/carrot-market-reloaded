@@ -24,6 +24,11 @@ export async function middleware(request: NextRequest) {
         }
     } else {
         if(exists) {
+            /* if(request.nextUrl.pathname.indexOf("/product/add") !== -1) {
+                return NextResponse.redirect(new URL("/products/add", request.url))
+            } else {
+                return NextResponse.redirect(new URL("/home", request.url))
+            } */
             return NextResponse.redirect(new URL("/home", request.url))
         }
     }

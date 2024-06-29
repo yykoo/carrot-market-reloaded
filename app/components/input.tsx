@@ -10,7 +10,7 @@ export default function Input({
     errors=[],
     ...rest
 } : InputProps & InputHTMLAttributes<HTMLInputElement>) {
-    console.log(rest)
+    //console.log(rest)
     return (
         <div className="flex flex-col gap-2">
             <input

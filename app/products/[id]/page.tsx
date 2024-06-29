@@ -7,17 +7,18 @@ import Link from "next/link";
 import { formatToWon } from "@/lib/utils";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 
-async function getIsOwner(userId:number) {
-/*     const session = await getSession()
+export async function getIsOwner(userId:number) {
+    const session = await getSession()
 
     if(session.id) {
         return session.id === userId
-    } */
+    } else 
+        return false
 
-    return false
+    //return false
 }
 
-async function getProduct(id:number) {
+export async function getProduct(id:number) {
     // get인 경우만 cache, cookie나 headers를 사용하는 request도 cache 하지 않음, server action인 경우 cache하지 않음 
     // fetch("https://api.com", {
     //     next: {
@@ -84,10 +85,12 @@ export default async function ProductDetail({params,}:{params: {id:string}}) {
     }
 
     const isOwner = await getIsOwner(product.userId)
-    const revalidate = async() => {
-        'use server'
-        revalidateTag("all")
-    }
+    // const revalidate = async() => {
+    //     'use server'
+    //     revalidateTag("all")
+    // }
+    const UpdateLink = isOwner ? `/products/add?id=${id}` : ''
+    
     return (
         <div>
             <div className="relative aspect-square">
@@ -110,9 +113,15 @@ export default async function ProductDetail({params,}:{params: {id:string}}) {
                 <span className="font-semibold text-lg">{formatToWon(product.price)}원</span>
                 {
                     isOwner ? (
-                        <form action={revalidate}>
-                            <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">Revalidate title</button>
-                        </form>
+                        // <form action={revalidate}>
+                        //     <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">Revalidate title</button>
+                        // </form>
+                        <Link href={UpdateLink}>
+                            <button 
+                                className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
+                                Update
+                            </button>
+                        </Link>
                     ) : null
                 }
                 <Link className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold" href={``}>채팅하기</Link>

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 
 const db = new PrismaClient();
-
+/* 
 async function test() {
     const token = await db.sMSToken.create({
         data: {
@@ -15,8 +15,8 @@ async function test() {
     })
     console.log(token)
 }
-
-async function test2() {
+ */
+/* async function test2() {
     const token = await db.sMSToken.findUnique({
         where: {
             id:1
@@ -26,10 +26,10 @@ async function test2() {
         }
     })
     console.log(token)
-}
+} */
 
 //test()
-test2()
+//test2()
 
 // async function test() {
 //     const user = await db.user.create({
