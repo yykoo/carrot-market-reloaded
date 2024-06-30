@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatToWon } from "@/lib/utils";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
+import DelBtn from "@/components/delBtn";
 
 export async function getIsOwner(userId:number) {
     const session = await getSession()
@@ -116,15 +117,18 @@ export default async function ProductDetail({params,}:{params: {id:string}}) {
                         // <form action={revalidate}>
                         //     <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">Revalidate title</button>
                         // </form>
-                        <Link href={UpdateLink}>
-                            <button 
-                                className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
-                                Update
-                            </button>
-                        </Link>
+                        <>
+                            <Link href={UpdateLink}>
+                                <button 
+                                    className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold">
+                                    Update
+                                </button>
+                            </Link>
+                            <DelBtn pid={params.id} />
+                        </>
                     ) : null
                 }
-                <Link className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold" href={``}>채팅하기</Link>
+                <Link className="bg-green-600 px-5 py-2.5 rounded-md text-white font-semibold" href={``}>채팅하기</Link>
             </div>
         </div>
     )

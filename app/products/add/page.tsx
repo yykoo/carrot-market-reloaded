@@ -48,7 +48,7 @@ export default function AddProduct() {
     }
     const [state, action] = useFormState(uploadProduct, null)
     const getData = () => {
-        const url = `/api?id=${params.get('id')}`
+        const url = `/api?cmd=pinfo&id=${params.get('id')}`
         console.log(`url > ${url}`)
         fetch(url)
         .then((response) => response.json())

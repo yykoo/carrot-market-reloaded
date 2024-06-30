@@ -25,12 +25,30 @@ const productSchema = z.object({
 })
 */
 
+export async function deleteProduct(id:number) {
+    const session = await getSession()
+    if(!session)    return false
+    if(!id) return false
+
+    try{
+        const product = await db.product.delete({
+            where: {
+                id,
+                userId: session.id,
+            }
+        })
+        return product
+    } catch(e) {
+        return false
+    }
+}
+
 export async function getProductInfo(id:number) {
     const session = await getSession()
-    if(!session)    return false;
+    if(!session)    return false
 
     const userId = session.id
-    if(!userId)    return false;
+    if(!userId)    return false
 
     const product = await db.product.findUnique({
         where: {
