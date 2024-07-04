@@ -7,6 +7,7 @@ import { revalidatePath, unstable_cache as nextCache, revalidateTag } from "next
 import { notFound } from "next/navigation"
 import Image from "next/image"
 import { revalidate } from "@/(tabs)/home/page"
+import LikeButton from "@/components/like-button"
 
 async function getPost(id:number) {
     //const post = await db.post.findUnique({
@@ -87,41 +88,6 @@ export default async function PostDetail({params,}:{params: {id:string,}}) {
 
     const {likeCount, isLiked} = await getCachedLikeStatus(id)
 
-    const likePost = async() => {
-        "use server"
-
-        try{
-            const session = await getSession()
-            await db.like.create({
-                data: {
-                    postId:id,
-                    userId:session.id!,
-                }
-            })
-            //revalidatePath(`/post/${id}`)
-            revalidateTag(`like-status-${id}`)
-        }catch(e){}
-    }
-
-    const dislikePost = async() => {
-        "use server"
-
-        try{
-            const session = await getSession()
-
-            console.log(`dislike > postid:${id}, userid:${session.id}`)
-            await db.like.delete({
-                where: {
-                    id: {
-                        postId:id,
-                        userId:session.id!,
-                    }
-                }
-            })
-            //revalidatePath(`/post/${id}`)
-            revalidateTag(`like-status-${id}`)
-        }catch(e){}
-    }
     return (
         <div className="p-5 text-white">
         <div className="flex items-center gap-2 mb-2">
@@ -146,18 +112,7 @@ export default async function PostDetail({params,}:{params: {id:string,}}) {
             <EyeIcon className="size-5" />
             <span>조회 {post.views}</span>
           </div>
-          <form action={isLiked ? dislikePost : likePost}>
-            <button
-              className={`flex items-center gap-2 
-                text-neutral-400 text-sm border border-neutral-400 
-                rounded-full p-2 transition-colors
-                ${isLiked ? "bg-orange-500 text-white border-orange-500" : "hover:bg-neutral-800"}
-                `}
-            >
-            {isLiked ? <HandThumbUpIcon className="size-5" /> : <OutlineHandThumbUpIcon className="size-5" />}
-            {isLiked ? (<span> {likeCount} </span>) : (<span>공감하기 ({likeCount})</span>)}  
-            </button>
-          </form>
+          <LikeButton isLiked={isLiked} likeCount={likeCount} postId={id} />
         </div>
       </div>
     )
