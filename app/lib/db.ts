@@ -1,6 +1,8 @@
-import { PrismaClient } from "@prisma/client"
+import { Prisma, PrismaClient } from "@prisma/client"
 
 const db = new PrismaClient();
+export default db;
+
 /* 
 async function test() {
     const token = await db.sMSToken.create({
@@ -39,5 +41,4 @@ async function test() {
 //     })
 // }
 
-export default db;
-
+export type InitialComment = Prisma.PromiseReturnType<typeof getComments>

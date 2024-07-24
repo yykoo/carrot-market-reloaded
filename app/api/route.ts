@@ -1,6 +1,8 @@
 import { deleteProduct, getProductInfo } from "@/products/add/action"
 import { notFound } from "next/navigation";
 import fs from "fs/promises"
+import getSession from "@/lib/session";
+import { delComment, getComments } from "@/posts/[id]/actions";
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
@@ -18,10 +20,23 @@ export async function GET(request: Request) {
     {
         return removeProduct(Number(id))
     }
+    else if(cmd == "delcmmt")
+    {
+        return DeleteComment(Number(id))
+    }
+    else if(cmd == "cmtlist") 
+    {
+        return CommentList(Number(id))
+    }
     else 
     {
         return notFound()
     }
+}
+
+export async function POST(req: Request, res:Response) {
+    const data = req.body
+
 }
 
 async function productInfo(id:number) {
@@ -74,4 +89,31 @@ async function removeProduct(id:number) {
     if(ret) result.response = "ok"
     
     return Response.json(result)
+}
+
+async function DeleteComment(cmmt_id:number) {
+    const result = {'response':'ok', 'msg':''}
+    const session = await getSession()
+
+    if(session.id == null)
+    {
+        result.response = "fail"
+        result.msg = "로그인이 필요합니다."
+    }
+    
+    const ret = await delComment(cmmt_id, session.id!)
+
+    if(!ret)
+    {
+        result.response = "fail"
+        result.msg = "삭제에 실패했습니다."
+    }
+
+    return Response.json(result)
+}
+
+async function CommentList(id:number) { 
+    const cmmt = await getComments(id)
+    console.log(cmmt)
+    return Response.json(cmmt)
 }
