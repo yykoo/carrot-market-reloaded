@@ -6,6 +6,7 @@ import Image from "next/image";
 import { formatToTimeAgo } from "@/lib/utils";
 import { ArrowUpCircleIcon } from "@heroicons/react/24/outline";
 import { createClient, RealtimeChannel } from "@supabase/supabase-js";
+import { saveMessage } from "@/chats/[id]/actions";
 
 interface ChatMessageListProps {
     initialMessages:InitialChatMessages;
@@ -35,7 +36,7 @@ export default function ChatMessagesList({
         } = event
         setMessage(value)
     }
-    const onSubmit = (event: React.FormEvent) => {
+    const onSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
         //alert(message)
         setMessages(prevMsgs => [...prevMsgs, {
@@ -58,6 +59,7 @@ export default function ChatMessagesList({
                     }
                 }
         });
+        await saveMessage(message, chatRoomId)
         setMessage("")
     }
     useEffect(() => {
