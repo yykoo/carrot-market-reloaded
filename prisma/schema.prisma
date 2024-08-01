@@ -4,6 +4,8 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// Migration 참고 : https://velog.io/@10011001101010/%EB%82%9C-%EB%8B%A8%EC%A7%80-%EC%8A%A4%ED%82%A4%EB%A7%88-%EB%B3%80%EA%B2%BD%EC%9D%84-%ED%95%98%EA%B3%A0-generate%EC%99%80-db-push-%EB%A5%BC-%ED%96%88%EC%9D%84-%EB%BF%90%EC%9D%B8%EB%8D%B0-%EA%B8%B0%EC%A1%B4-db%EA%B0%80-%EB%8B%A4-%EB%82%A0%EB%9D%BC%EA%B0%94%EB%8B%A4%EC%A7%80
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -89,7 +91,8 @@ model Like {
 } 
 
 model ChatRoom {
-  id String @id @default(cuid())
+  //id String @id @default(cuid())
+  id String @id
   users User[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

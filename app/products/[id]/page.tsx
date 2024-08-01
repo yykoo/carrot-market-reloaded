@@ -46,6 +46,19 @@ export async function getProduct(id:number) {
     return product
 }
 
+export async function chkAlreadyRoom(id:string) {
+    const room = await db.chatRoom.findUnique({
+        where: {
+            id,
+        },
+        select: {
+            id:true
+        }
+    })
+
+    return Boolean(room)
+}
+
 const getCacheProduct = nextCache(getProduct, ["product-detail"], {
     tags: ["product-detail", "all"]
 })
@@ -95,20 +108,37 @@ export default async function ProductDetail({params,}:{params: {id:string}}) {
         "use server"
 
         const session = await getSession()
-        const room = await db.chatRoom.create({
-            data: {
-                users: {
-                    connect: [
-                        {id:product.userId},
-                        {id:session.id}
-                    ]
+        // 로그인 상태 아니라면 패스
+        if(!session.id) return
+        // 내 상품이라면 패스
+        if(isOwner) return
+
+        /**
+         * product + userid 
+         */
+        const _chat_id = `${id}-${session.id!}`
+        const cRoom = await chkAlreadyRoom(_chat_id)
+
+        if(cRoom) 
+        {
+            redirect(`/chats/${_chat_id}`)
+        } else {
+            const room = await db.chatRoom.create({
+                data: {
+                    id: _chat_id,
+                    users: {
+                        connect: [
+                            {id:product.userId},
+                            {id:session.id}
+                        ]
+                    }
+                },
+                select: {
+                    id: true
                 }
-            },
-            select: {
-                id: true
-            }
-        })
-        redirect(`/chats/${room.id}`)
+            })
+            redirect(`/chats/${room.id}`)
+        }
     }
 
     return (
