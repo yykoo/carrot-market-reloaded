@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    experimential: {
+        taint: true
+    },
+    logging: {
+        fetches: {
+            fullUrl: true,
+        },
+    },
     images:{
         remotePatterns: [
             {
