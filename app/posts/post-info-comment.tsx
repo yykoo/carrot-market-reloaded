@@ -57,7 +57,7 @@ export async function PostInfoComment(props: {id:number, uid:number}) {
                 ))
                 }
             </div>
-            <div className="mt-10 border-t-2 pt-10">
+            <div key={id} className="mt-10 border-t-2 pt-10">
                 <form>
                     <input type="hidden" name='postid' defaultValue={id} value={id} />
                     <textarea 
