@@ -56,7 +56,7 @@ export default async function Chat() {
             <h1 className="">Chat</h1>
             {
                 list.map((chat) => (
-                    <div className="flex gap-5 w-full py-4 px-4 rounded-xl bg-base-100 shadow-xl">
+                    <div key={chat.id} className="flex gap-5 w-full py-4 px-4 rounded-xl bg-base-100 shadow-xl">
                         <div className="flex justify-center items-center gap-4">
                         {
                             chat.users[0]?.avatar ? (

@@ -30,7 +30,7 @@ export async function PostInfoCommentList(props: {id:number}) {
         <div className="mt-10 border-t-2">
         {
             comments.map((comment) => (
-                <div className="mt-12">
+                <div key={comment.id} className="mt-12">
                     <div className="flex flex-row items-center gap-3">
                         <Image width={28} height={28} className="size-6 rounded-full"
                             src={comment.user.avatar!} alt={comment.user.username} />

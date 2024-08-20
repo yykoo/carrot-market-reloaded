@@ -18,20 +18,6 @@ export async function PostInfoComment(props: {id:number, uid:number}) {
         setComments(list)
     }
 
-    /*
-    useEffect(() => {
-        const clist = Comments(id)
-        if(clist != null)
-            resetList(clist)
-    },[id])
-    */
-    
-    /*
-    async function Comments(id:number) {
-        "use server"
-        return await getComments(id)
-    }
-    */
     function LoadComments(id:number) {
         const url = `/api?cmd=cmdlist&id=${id}`
         console.log(` >> ` + url)
@@ -51,13 +37,12 @@ export async function PostInfoComment(props: {id:number, uid:number}) {
 
     LoadComments(id)
     
-
     return (
         <>
             <div className="mt-10 border-t-2">
             {
                 comments?.map((comment) => (
-                    <div className="mt-12">
+                    <div key={comment.id} className="mt-12">
                         <div className="flex flex-row items-center gap-3">
                             <Image width={28} height={28} className="size-6 rounded-full"
                                 src={comment?.user.avatar!} alt={comment.user.username} />
