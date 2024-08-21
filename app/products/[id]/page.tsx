@@ -8,6 +8,7 @@ import { formatToWon } from "@/lib/utils";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import DelBtn from "@/components/delBtn";
 import { Prisma } from "@prisma/client";
+import { getProduct, TypeProduct } from "./actions";
 
 export async function getIsOwner(userId:number) {
     const session = await getSession()
@@ -19,36 +20,6 @@ export async function getIsOwner(userId:number) {
 
     //return false
 }
-
-export async function getProduct(id:number) {
-    // get인 경우만 cache, cookie나 headers를 사용하는 request도 cache 하지 않음, server action인 경우 cache하지 않음 
-    // fetch("https://api.com", {
-    //     next: {
-    //         revalidate: 10,
-    //         tags: ["hello", "all"]
-    //     }
-    // })
-
-    //await new Promise((resolve) => setTimeout(resolve, 60000));
-    const product = await db.product.findUnique({
-        where: {
-            id,
-        }, 
-        include: {
-            user: {
-                select:{
-                    username: true,
-                    avatar: true,
-                }
-            }
-        },
-    })
-    console.log('getProduct')
-    return product
-}
-
-export type TypeProduct = Prisma.PromiseReturnType<typeof getProduct>
-
 
 export async function chkAlreadyRoom(id:string) {
     const room = await db.chatRoom.findUnique({
