@@ -1,3 +1,4 @@
+import { getComments } from "@/posts/[id]/actions";
 import { Prisma, PrismaClient } from "@prisma/client"
 
 const db = new PrismaClient();
