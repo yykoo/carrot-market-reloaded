@@ -8,49 +8,11 @@ import { formatToWon } from "@/lib/utils";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import DelBtn from "@/components/delBtn";
 import { Prisma } from "@prisma/client";
-import { getProduct, TypeProduct } from "./actions";
-
-export async function getIsOwner(userId:number) {
-    const session = await getSession()
-
-    if(session.id) {
-        return session.id === userId
-    } else 
-        return false
-
-    //return false
-}
-
-export async function chkAlreadyRoom(id:string) {
-    const room = await db.chatRoom.findUnique({
-        where: {
-            id,
-        },
-        select: {
-            id:true
-        }
-    })
-
-    return Boolean(room)
-}
+import { chkAlreadyRoom, getIsOwner, getProduct, getProductTitle, TypeProduct } from "./actions";
 
 const getCacheProduct = nextCache(getProduct, ["product-detail"], {
     tags: ["product-detail", "all"]
 })
-
-async function getProductTitle(id:number) {
-    //await new Promise((resolve) => setTimeout(resolve, 60000));
-    const product = await db.product.findUnique({
-        where: {
-            id,
-        }, 
-        select: {
-            title: true,
-        },
-    })
-    console.log('getProductTitle')
-    return product
-}
 
 const getCachedProductTitle = nextCache(getProductTitle, ["product-title"], {
     tags: ["product-title", "all"]
