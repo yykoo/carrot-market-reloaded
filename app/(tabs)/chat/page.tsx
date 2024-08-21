@@ -13,7 +13,7 @@ export default async function Chat() {
     {
         return notFound()
     }
-
+/*
     const list = await getChatList(session.id)
     console.log(list)
 
@@ -55,4 +55,6 @@ export default async function Chat() {
             }          
         </div>
     )
+*/
+    return (<div>Chat List</div>)
 }
