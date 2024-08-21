@@ -7,6 +7,7 @@ import Link from "next/link";
 import { formatToWon } from "@/lib/utils";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import DelBtn from "@/components/delBtn";
+import { Prisma } from "@prisma/client";
 
 export async function getIsOwner(userId:number) {
     const session = await getSession()
@@ -45,6 +46,9 @@ export async function getProduct(id:number) {
     console.log('getProduct')
     return product
 }
+
+export type TypeProduct = Prisma.PromiseReturnType<typeof getProduct>
+
 
 export async function chkAlreadyRoom(id:string) {
     const room = await db.chatRoom.findUnique({
@@ -93,7 +97,7 @@ export default async function ProductDetail({params,}:{params: {id:string}}) {
     if(isNaN(id)) {
         return notFound()
     }
-    const product = await getCacheProduct(id)
+    const product = await getCacheProduct(id) as TypeProduct
     if(!product) {
         return notFound()
     }
