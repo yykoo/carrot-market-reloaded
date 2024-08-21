@@ -4,41 +4,7 @@ import { notFound } from "next/navigation"
 import Image from "next/image";
 import { formatToTimeAgo } from "@/lib/utils";
 import Link from "next/link";
-
-export async function getChatList(id: number) {
-    const list = await db.chatRoom.findMany({
-        where: {
-            users: {
-                some: {
-                    id: {
-                        in: [id!],
-                    }
-                }
-            }
-        },
-        include: {
-            messages: {
-                select: {
-                    payload: true,
-                    id: true,
-                    created_at: true,
-                },
-                orderBy: {
-                    created_at: "desc",
-                }
-            },
-            users: {
-                where: {
-                    NOT: {
-                        id,
-                    }
-                }
-            }
-        }
-    })
-
-    return list 
-}
+import { getChatList } from "./actions";
 
 export default async function Chat() {
     const session = await getSession()
