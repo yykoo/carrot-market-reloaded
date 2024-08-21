@@ -1,4 +1,5 @@
 import db from "@/lib/db"
+import { Prisma } from "@prisma/client"
 
 export async function getChatList(id: number) {
     const list = await db.chatRoom.findMany({
@@ -34,3 +35,5 @@ export async function getChatList(id: number) {
 
     return list 
 }
+
+export type TypeChatList = Prisma.PromiseReturnType<typeof getChatList>

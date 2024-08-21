@@ -4,7 +4,7 @@ import { notFound } from "next/navigation"
 import Image from "next/image";
 import { formatToTimeAgo } from "@/lib/utils";
 import Link from "next/link";
-import { getChatList } from "./actions";
+import { getChatList, TypeChatList } from "./actions";
 
 export default async function Chat() {
     const session = await getSession()
@@ -13,8 +13,8 @@ export default async function Chat() {
     {
         return notFound()
     }
-/*
-    const list = await getChatList(session.id)
+
+    const list = await getChatList(session.id) as TypeChatList
     console.log(list)
 
     return (
@@ -55,6 +55,4 @@ export default async function Chat() {
             }          
         </div>
     )
-*/
-    return (<div>Chat List</div>)
 }
