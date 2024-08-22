@@ -91,7 +91,7 @@ export default function AddProduct() {
         <div>
             <form action={action} className="p-5 flex flex-col gap-5">
                 <input type='hidden' name='cmd' defaultValue={cmd} />
-                <input type='hidden' name='id' defaultValue={pid} />
+                <input type='hidden' name='id' defaultValue={pid ? pid : 0} />
                 <input type='hidden' name='prePhoto' defaultValue={preview} />
                 <label
                 htmlFor="photo"
