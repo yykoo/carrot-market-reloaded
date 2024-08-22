@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 
 
 export async function PostInfoComment(props: {id:number, uid:number}) {
+    /*
     const id = props.id
     const uid = props.uid
 
@@ -71,4 +72,8 @@ export async function PostInfoComment(props: {id:number, uid:number}) {
             </div>
         </>
     )
+    */
+   return (
+    <div>Post Innfo Comment</div>
+   )
 }
