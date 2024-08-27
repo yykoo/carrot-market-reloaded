@@ -36,3 +36,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 추가 파일
+!prisma/migrations/20240823061311_hello_vercel/*
