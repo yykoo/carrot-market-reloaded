@@ -9,12 +9,12 @@ import { useFormState } from "react-dom";
 import { notFound, useSearchParams } from "next/navigation";
 import { formatToWon } from "@/lib/utils";
 
-function getParam() {
+async function GetParam() {
     const params = useSearchParams();
     return params.get('id')
 }
 
-export default function AddProduct() {
+export default async function AddProduct() {
     console.log("AddProduct")
     const InitialProduct = {'response':'fail'
         , 'id':0
@@ -28,7 +28,7 @@ export default function AddProduct() {
     //     initialProducts:_InitialProduct,
     // }
 
-    const param = getParam()
+    const param = await GetParam()
     const [product, setProduct] = useState(InitialProduct)
     const [preview, setPreview] = useState("")
     const [_title, setTitle] = useState("")
@@ -81,7 +81,7 @@ export default function AddProduct() {
     }
     let btnName = "작성 완료"
     let cmd = 'CREATE'
-    let pid = params.get('id') ? params.get('id') : ''
+    let pid = param ? param : ''
 
     if(pid) 
     {
