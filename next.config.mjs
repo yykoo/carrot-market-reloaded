@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimential: {
-        taint: true
+    experimental: {
+        taint: true,
+        missingSuspenseWithCSRBailout: false,
     },
     logging: {
         fetches: {

@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import { getProductInfo, uploadProduct } from "./action";
 import { useFormState } from "react-dom";
 import { notFound, useSearchParams } from "next/navigation";
-import { formatToWon } from "@/lib/utils";
 
 async function GetParam() {
     const params = useSearchParams();
