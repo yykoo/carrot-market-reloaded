@@ -9,6 +9,11 @@ import { useFormState } from "react-dom";
 import { notFound, useSearchParams } from "next/navigation";
 import { formatToWon } from "@/lib/utils";
 
+function getParam() {
+    const params = useSearchParams();
+    return params.get('id')
+}
+
 export default function AddProduct() {
     console.log("AddProduct")
     const InitialProduct = {'response':'fail'
@@ -23,7 +28,7 @@ export default function AddProduct() {
     //     initialProducts:_InitialProduct,
     // }
 
-    const params = useSearchParams();
+    const param = getParam()
     const [product, setProduct] = useState(InitialProduct)
     const [preview, setPreview] = useState("")
     const [_title, setTitle] = useState("")
@@ -48,7 +53,7 @@ export default function AddProduct() {
     }
     const [state, action] = useFormState(uploadProduct, null)
     const getData = () => {
-        const url = `/api?cmd=pinfo&id=${params.get('id')}`
+        const url = `/api?cmd=pinfo&id=${param}`
         console.log(`url > ${url}`)
         fetch(url)
         .then((response) => response.json())
